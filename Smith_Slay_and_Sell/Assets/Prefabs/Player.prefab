@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 3524725434531145142}
   - component: {fileID: 1000856216590904270}
   - component: {fileID: 9193172843037282671}
+  - component: {fileID: 2018481951076927063}
+  - component: {fileID: 1723349658441777260}
   m_Layer: 0
   m_Name: PlayerSprite
   m_TagString: Untagged
@@ -103,6 +105,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6805f20f673352e5aad083eb7d83ea2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Billboard
+--- !u!95 &2018481951076927063
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802992199690380387}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0aceec42137deb403a43d87191c11bdf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1723349658441777260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802992199690380387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f956fe8bf8df945748201f8be254d6c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
+  playerMovement: {fileID: 8268495603444209777}
 --- !u!1 &5506925708470799719
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,6 +267,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b299e59455d4a2306ad70f0ed2e345e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::movement
+  playerSpeed: 5
+  deadzone: 0.5
+  turnSmoothSpeed: 60
 --- !u!114 &4339209869775190007
 MonoBehaviour:
   m_ObjectHideFlags: 0

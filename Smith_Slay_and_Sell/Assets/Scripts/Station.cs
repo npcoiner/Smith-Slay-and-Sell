@@ -14,8 +14,13 @@ public class Station : MonoBehaviour
 
     [Header("Processing Settings")]
     public float processingTime = 3.0f;
+
     private float currentTimer = 0f;
 
+
+    //Will need to switch from a tag system eventually since only
+    //one tag can be set at a time in Unity, but we might have multiple processing
+    //types that should only work on some entities
     [Header("Item Settings")]
     [Tooltip("The tag of the item this station accepts.")]
     public string validItemTag = "Processable";

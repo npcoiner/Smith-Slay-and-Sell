@@ -20,7 +20,8 @@ public class Interact : MonoBehaviour
             controller = gameObject.AddComponent<CharacterController>();
 
         //This code searches for the InteractSphere, and if it doesn't exist, it creates a new one.
-        //This is slightly unnecessary to be completely honest.
+        //This is slightly unnecessary to be completely honest, but it's a good way to showcase how
+        //to use scripting to create components and attatch them all together.
         interactSphereTransform = transform.Find("InteractSphere");
         if (!interactSphereTransform)
         {
