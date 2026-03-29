@@ -37,14 +37,19 @@ public class InteractSphere : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        //Debug.Log($"Enter: {other.name}");
+        Debug.Log($"Enter: {other.name}");
         objectsInRange.Add(other.gameObject);
     }
 
     void OnTriggerExit(Collider other)
     {
-        //Debug.Log($"Exit: {other.name}");
+        Debug.Log($"Exit: {other.name}");
 
         objectsInRange.Remove(other.gameObject);
+    }
+
+    public void CleanUpList()
+    {
+        objectsInRange.RemoveAll(item => item == null);
     }
 }

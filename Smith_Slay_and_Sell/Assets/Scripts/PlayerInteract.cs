@@ -10,7 +10,7 @@ public class Interact : MonoBehaviour
     private Transform interactSphereTransform;
     private InteractSphere interactSphereScript;
 
-    private GameObject heldObject;
+    private Transform heldObject;
 
     private void Awake()
     {
@@ -63,6 +63,7 @@ public class Interact : MonoBehaviour
     {
 
         Debug.Log("Interact started");
+        interactSphereScript.CleanUpList();
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext ctx)
@@ -70,9 +71,9 @@ public class Interact : MonoBehaviour
         var objectInRange = interactSphereScript.GetNearestInRange();
         if (objectInRange)
         {
-            heldObject = objectInRange;
-            heldObject.transform.SetParent(transform);
-            heldObject.transform.localPosition = new Vector3(0, 0, 1.5f);
+            heldObject = objectInRange.transform.root;
+            heldObject.SetParent(transform);
+            heldObject.localPosition = new Vector3(0, 0, 1.5f);
         }
         Debug.Log(objectInRange);
         //Debug.Log("Interact held");
@@ -83,9 +84,10 @@ public class Interact : MonoBehaviour
         Debug.Log("Interact canceled");
         if (heldObject)
         {
-            heldObject.transform.SetParent(null);
+            heldObject.SetParent(null);
             heldObject = null;
         }
+               interactSphereScript.CleanUpList();
     }
     void Update()
     {
