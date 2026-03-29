@@ -10,7 +10,7 @@ public class Billboard : MonoBehaviour
         //Safety for if/when camera pointing straight up/down
         if (camForward.sqrMagnitude > 0.001f)
         {
-            transform.forward = -camForward.normalized;
+            transform.forward = camForward.normalized;
         }
 
     }
