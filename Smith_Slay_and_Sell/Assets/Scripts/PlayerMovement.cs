@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isWalking;
 
+    private float playerCenter = 0.5f;
     private void Start()
     {
         //This if statement attemps to get a component if it already exists,
@@ -23,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
             controller = gameObject.AddComponent<CharacterController>();
         }
 
-        controller.center = new Vector3(0f, 0.5f, 0f);
+        controller.center = new Vector3(0f, playerCenter, 0f);
         controller.minMoveDistance = 0f;
         playerInput = GetComponent<PlayerInput>();
         //Debug.Log(controller);
@@ -77,5 +78,13 @@ public class PlayerMovement : MonoBehaviour
         Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
 
         body.AddForce(pushDir * pushPower, ForceMode.Impulse);
+    }
+    void LateUpdate()
+    {
+        Vector3 lockedPosition = transform.position;
+        //
+        lockedPosition.y = playerCenter;
+
+        transform.position = lockedPosition;
     }
 }
