@@ -5,7 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 5.0f;
     [SerializeField] private float deadzone = 1f;
-    [SerializeField] private float turnSmoothSpeed = 60f;
+    [SerializeField] private float turnSmoothSpeed = 1f;
     [SerializeField] private float pushPower = 2.0f;
 
     private CharacterController controller;
@@ -67,19 +67,19 @@ public class PlayerMovement : MonoBehaviour
     {
         return isWalking;
     }
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        Rigidbody body = hit.collider.attachedRigidbody;
-
-        if (body == null || body.isKinematic)
-        {
-            return;
-        }
-
-        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0.1f, hit.moveDirection.z);
-
-        body.AddForce(pushDir * pushPower, ForceMode.Impulse);
-    }
+    //    void OnControllerColliderHit(ControllerColliderHit hit)
+    //    {
+    //        Rigidbody body = hit.collider.attachedRigidbody;
+    //
+    //        if (body == null || body.isKinematic)
+    //        {
+    //            return;
+    //        }
+    //
+    //        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0.1f, hit.moveDirection.z);
+    //
+    //        body.AddForce(pushDir * pushPower, ForceMode.Impulse);
+    //    }
     void LateUpdate()
     {
         Vector3 lockedPosition = transform.position;

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Processable
   - Pickupable
+  - Forgeable
   layers:
   - Default
   - TransparentFX

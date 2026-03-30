@@ -190,7 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::movement
   playerSpeed: 5
   deadzone: 0.1
-  turnSmoothSpeed: 60
+  turnSmoothSpeed: 10
   pushPower: 0.1
 --- !u!114 &4339209869775190007
 MonoBehaviour:
@@ -205,6 +205,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Interact
   showInteractSphere: 0
+  suctionStrength: 140
+  dampening: 10
+  maxForce: 2000
 --- !u!114 &7303932866538419565
 MonoBehaviour:
   m_ObjectHideFlags: 0

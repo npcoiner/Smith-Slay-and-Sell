@@ -12,6 +12,13 @@ public class Interact : MonoBehaviour
     private InteractSphere interactSphereScript;
 
     private Transform heldObject;
+    private Rigidbody heldRb;
+
+    [Header("Magnet Settings")]
+    public float suctionStrength = 250f;
+    public float dampening = 15f;
+    public float holdDistance = 1.5f;
+    public float holdHeight = 0.5f;
 
     private void Awake()
     {
@@ -60,43 +67,70 @@ public class Interact : MonoBehaviour
             meshRenderer.enabled = showInteractSphere;
         }
     }
-
-    //Callback function definitions for each of the interactions
     private void OnInteractStarted(InputAction.CallbackContext ctx)
     {
-
-        Debug.Log("Interact started");
         interactSphereScript.CleanUpList();
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext ctx)
     {
+        if (heldRb != null)
+        {
+            DropObject();
+            return;
+        }
+
         var objectInRange = interactSphereScript.GetNearestFiltered(PICKUP_TAG);
         if (objectInRange)
         {
             heldObject = objectInRange.transform.root;
-            heldObject.SetParent(transform);
-            heldObject.localPosition = new Vector3(0, 0, 1.5f);
+            heldRb = heldObject.GetComponent<Rigidbody>();
+
+            if (heldRb != null)
+            {
+                heldRb.useGravity = false;
+                heldRb.angularDamping = 10f;
+                Physics.IgnoreCollision(GetComponent<Collider>(), objectInRange.GetComponent<Collider>(), true);
+            }
         }
-        Debug.Log(objectInRange);
-        //Debug.Log("Interact held");
     }
+
     private void OnInteractCanceled(InputAction.CallbackContext ctx)
     {
-
-        Debug.Log("Interact canceled");
-        if (heldObject)
-        {
-            heldObject.SetParent(null);
-            heldObject = null;
-        }
-        interactSphereScript.CleanUpList();
     }
-    void Update()
+
+    private void DropObject()
     {
-        if (heldObject != null)
+        if (heldRb != null)
         {
-            heldObject.position = transform.position + transform.forward * 1.5f;
+            var col = heldRb.GetComponentInChildren<Collider>();
+            if (col != null) Physics.IgnoreCollision(GetComponent<Collider>(), col, false);
+
+            heldRb.useGravity = true;
+            heldRb.angularDamping = 0.05f;
+            heldRb = null;
+        }
+        heldObject = null;
+    }
+
+    void FixedUpdate()
+    {
+        if (heldRb != null)
+        {
+            Vector3 targetPos = transform.position + (transform.forward * holdDistance) + (Vector3.up * holdHeight);
+            Vector3 direction = targetPos - heldRb.position;
+            float distance = direction.magnitude;
+
+            float forceMultiplier = Mathf.Clamp(distance * distance, 0.1f, 10f);
+            Vector3 suctionForce = direction.normalized * (suctionStrength * forceMultiplier);
+            Vector3 dragForce = heldRb.linearVelocity * dampening;
+
+            if (distance < 0.05f)
+            {
+                heldRb.linearVelocity = Vector3.Lerp(heldRb.linearVelocity, Vector3.zero, Time.fixedDeltaTime);
+            }
+
+            heldRb.AddForce(suctionForce - dragForce, ForceMode.Acceleration);
         }
     }
 }
