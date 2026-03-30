@@ -4,7 +4,7 @@ using UnityEngine;
 public class Billboard : MonoBehaviour
 {
     [SerializeField] private bool preserveZRotation = true;
-
+//test
     void LateUpdate()
     {
         Vector3 camForward = Camera.main.transform.forward;

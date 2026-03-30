@@ -75,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+        Vector3 pushDir = new Vector3(hit.moveDirection.x, 0.1f, hit.moveDirection.z);
 
         body.AddForce(pushDir * pushPower, ForceMode.Impulse);
     }
