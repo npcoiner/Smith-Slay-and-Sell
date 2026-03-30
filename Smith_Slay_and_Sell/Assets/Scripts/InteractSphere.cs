@@ -46,12 +46,13 @@ public class InteractSphere : MonoBehaviour
         foreach (var obj in objectsInRange)
         {
 
-            float distanceToObj = (obj.transform.position - transform.position).sqrMagnitude;
-            if (distanceToObj < shortestDistance)
+            if (obj.CompareTag(filterTag))
             {
-                shortestDistance = distanceToObj;
-                if (obj.CompareTag(filterTag))
+
+                float distanceToObj = (obj.transform.position - transform.position).sqrMagnitude;
+                if (distanceToObj < shortestDistance)
                 {
+                    shortestDistance = distanceToObj;
                     Debug.Log(obj.tag);
                     nearestObjFiltered = obj;
                 }
