@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Interactable : MonoBehaviour
 {
@@ -18,7 +17,8 @@ public class Interactable : MonoBehaviour
             controller = gameObject.AddComponent<CharacterController>();
 
         //This code searches for the InteractSphere, and if it doesn't exist, it creates a new one.
-        //This is slightly unnecessary to be completely honest.
+        //This is slightly unnecessary to be completely honest, but it's a good to showcase that scripts
+        //can add and manage their own components. I think sticking to one paradigm is best.
         interactSphereTransform = transform.Find("InteractSphere");
         if (!interactSphereTransform)
         {

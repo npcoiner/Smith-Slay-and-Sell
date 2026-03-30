@@ -4,7 +4,6 @@ using UnityEngine;
 public class Billboard : MonoBehaviour
 {
     [SerializeField] private bool preserveZRotation = true;
-//test
     void LateUpdate()
     {
         Vector3 camForward = Camera.main.transform.forward;
@@ -17,6 +16,9 @@ public class Billboard : MonoBehaviour
 
             if (preserveZRotation)
             {
+                //Rather than setting the transform.forward to camera forward, we use a Quat and turn to it.
+                //This faces the plane of the sprite towards the camera, but doesn't override it's rotation
+                //around that normal axis
                 float currentRoll = transform.eulerAngles.z;
                 Quaternion targetLook = Quaternion.LookRotation(targetForward);
                 transform.rotation = targetLook * Quaternion.Euler(0f, 0f, currentRoll);

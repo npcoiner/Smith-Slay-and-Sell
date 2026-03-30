@@ -115,8 +115,8 @@ GameObject:
   - component: {fileID: 2959705297228212972}
   - component: {fileID: 6601165256316052024}
   m_Layer: 0
-  m_Name: InteractHitbox
-  m_TagString: Untagged
+  m_Name: PickupHitbox
+  m_TagString: Pickupable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

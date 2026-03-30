@@ -14,6 +14,7 @@ public class InteractSphere : MonoBehaviour
         }
     }
 
+    //This function returns the nearest object with a trigger collider to the interact sphere
     public GameObject GetNearestInRange()
     {
         //Remove any destroyed or missing objects for whatever reason.
@@ -34,6 +35,29 @@ public class InteractSphere : MonoBehaviour
             }
         }
         return nearestObj;
+    }
+    public GameObject GetNearestFiltered(string filterTag)
+    {
+        objectsInRange.RemoveAll(item => item == null);
+        if (objectsInRange.Count == 0) return null;
+
+        GameObject nearestObjFiltered = null;
+        float shortestDistance = float.MaxValue;
+        foreach (var obj in objectsInRange)
+        {
+
+            float distanceToObj = (obj.transform.position - transform.position).sqrMagnitude;
+            if (distanceToObj < shortestDistance)
+            {
+                shortestDistance = distanceToObj;
+                if (obj.CompareTag(filterTag))
+                {
+                    Debug.Log(obj.tag);
+                    nearestObjFiltered = obj;
+                }
+            }
+        }
+        return nearestObjFiltered;
     }
     void OnTriggerEnter(Collider other)
     {

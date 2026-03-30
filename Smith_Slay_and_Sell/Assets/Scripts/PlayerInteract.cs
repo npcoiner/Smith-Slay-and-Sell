@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class Interact : MonoBehaviour
 {
+    private string PICKUP_TAG = "Pickupable";
     private CharacterController controller;
     [Header("Debug Options")]
     public bool showInteractSphere = false;
@@ -68,7 +69,7 @@ public class Interact : MonoBehaviour
 
     private void OnInteractPerformed(InputAction.CallbackContext ctx)
     {
-        var objectInRange = interactSphereScript.GetNearestInRange();
+        var objectInRange = interactSphereScript.GetNearestFiltered(PICKUP_TAG);
         if (objectInRange)
         {
             heldObject = objectInRange.transform.root;
@@ -87,7 +88,7 @@ public class Interact : MonoBehaviour
             heldObject.SetParent(null);
             heldObject = null;
         }
-               interactSphereScript.CleanUpList();
+        interactSphereScript.CleanUpList();
     }
     void Update()
     {
