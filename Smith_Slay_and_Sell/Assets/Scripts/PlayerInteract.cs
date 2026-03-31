@@ -70,15 +70,22 @@ public class Interact : MonoBehaviour
     private void OnInteractStarted(InputAction.CallbackContext ctx)
     {
         interactSphereScript.CleanUpList();
+
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext ctx)
     {
-        if (heldRb != null)
+        //Some things don't destroy immediately in order to determine logic. 
+        //Better to cover all cases than follow one strict paradigm. All objects
+        //that are set inactive should get deleted eventually though or we risk memory leaks.
+        if (heldRb != null && heldRb.gameObject.activeInHierarchy)
         {
             DropObject();
             return;
         }
+        //Sanity check
+        heldRb = null;
+        heldObject = null;
 
         var objectInRange = interactSphereScript.GetNearestFiltered(PICKUP_TAG);
         if (objectInRange)
