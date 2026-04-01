@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class Anvil : MonoBehaviour
+//FIXME code duplication between Furnace and Anvil. Mostly everything is the same other than
+//interact and tag filtering
+
+public class Anvil : MonoBehaviour, IInteract
 {
     public enum AnvilState
     {
@@ -12,9 +15,8 @@ public class Anvil : MonoBehaviour
     public AnvilState currentState = AnvilState.Idle;
 
     [Header("Processing Settings")]
-    public float processingHits = 10f;
-
-    private float currentTimer = 0f;
+    public int processingHits = 10;
+    private int currentHits = 0;
 
 
     //Will need to switch from a tag system eventually since only
@@ -22,7 +24,7 @@ public class Anvil : MonoBehaviour
     //types that should only work on some entities
     [Header("Item Settings")]
     [Tooltip("The tag of the item this Anvil accepts.")]
-    public string validItemTag = "Processable";
+    public string validItemTag = "Forgeable";
     [Tooltip("The prefab to spawn after processing completes")]
     public GameObject outputPrefab;
     [Tooltip("Where the finished item should apper.")]
@@ -33,28 +35,31 @@ public class Anvil : MonoBehaviour
 
     void Update()
     {
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (currentState == AnvilState.Idle && other.CompareTag(validItemTag))
         {
-            StartProcessing(other.gameObject);
+            //Process on the root object
+            StartProcessing(other.transform.root.gameObject);
         }
     }
     private void StartProcessing(GameObject inputItem)
     {
         Debug.Log($"Anvil started processing: {inputItem.name}");
         currentState = AnvilState.Processing;
-        currentTimer = 0f;
 
         itemBeingProcessed = inputItem;
         itemBeingProcessed.SetActive(false);
+
     }
 
     private void CompleteProcessing()
     {
         Debug.Log("Anvil finished processing.");
+        currentHits = 0;
         currentState = AnvilState.Finished;
 
         if (itemBeingProcessed != null)
@@ -84,7 +89,22 @@ public class Anvil : MonoBehaviour
         {
             Debug.LogWarning("No output prefab assigned to Anvil!");
         }
-
         currentState = AnvilState.Idle;
+    }
+    public void Interact(GameObject player)
+    {
+        Debug.Log(currentHits);
+        if (currentState == AnvilState.Processing)
+        {
+            //bonk
+            currentHits += 1;
+            Debug.Log("test");
+
+        }
+        if (currentHits >= processingHits)
+        {
+            CompleteProcessing();
+        }
+
     }
 }

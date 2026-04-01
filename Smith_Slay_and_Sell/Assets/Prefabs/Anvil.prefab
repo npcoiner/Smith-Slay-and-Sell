@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 1446661665357307756}
   - component: {fileID: -2905735745653317713}
   - component: {fileID: -4271738416446910794}
-  - component: {fileID: 3794923082655721951}
+  - component: {fileID: -3481306379709395171}
   m_Layer: 0
   m_Name: Anvil
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,7 +143,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &3794923082655721951
+--- !u!114 &-3481306379709395171
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,12 +152,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5506925708470799719}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc6c7ecae480cc73c8c62b337d302c71, type: 3}
+  m_Script: {fileID: 11500000, guid: 0be99f2b89c3d18918139ab6eb1f78a7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Furnace
-  fireSprite: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::Anvil
   currentState: 0
-  processingTime: 3
+  processingHits: 10
   validItemTag: Forgeable
   outputPrefab: {fileID: 5506925708470799719, guid: 5227c17bc3ed5ba909d25bbeef23f38a, type: 3}
   spawnPoint: {fileID: 0}
@@ -286,7 +285,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6652233315285894396
 Transform:
   m_ObjectHideFlags: 0

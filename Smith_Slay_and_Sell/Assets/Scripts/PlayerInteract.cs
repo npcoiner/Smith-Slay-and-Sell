@@ -95,6 +95,7 @@ public class PlayerInteract : MonoBehaviour
         //attach itself or perform any needed behaviors. On my machine, the namespace doens't recognize
         //the interface
         var objectInRange = interactSphereScript.GetNearestFiltered(INTERACT_TAG);
+        Debug.Log(objectInRange.name);
         if (objectInRange != null)
         {
             var tempMonoArray = objectInRange.GetComponents<MonoBehaviour>();
