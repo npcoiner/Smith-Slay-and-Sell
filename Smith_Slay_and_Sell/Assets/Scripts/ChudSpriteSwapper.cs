@@ -1,46 +1,86 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SpriteAnimator : MonoBehaviour
 {
+    public enum PlayMode { Idle, Looping, Once }
+
+    [Header("Settings")]
     public SpriteRenderer spriteRenderer;
-    public Sprite[] animationFrames; // Drag all your extracted frames here
+    public Sprite[] animationFrames;
     public float framesPerSecond = 10f;
-    public bool isActivated = false;
+
+    [Header("State")]
+    public PlayMode currentMode = PlayMode.Idle;
+
+    [Header("Events")]
+    public UnityEvent onAnimationComplete;
 
     private int currentFrame;
     private float timer;
 
     void Update()
     {
-        if (isActivated && animationFrames.Length > 0)
-        {
-            PlayLoop();
-        }
-        else
-        {
-            ResetToFirstFrame();
-        }
-    }
+        // Don't run logic if we are Idle or have no frames
+        if (currentMode == PlayMode.Idle || animationFrames.Length == 0) return;
 
-    void PlayLoop()
-    {
         timer += Time.deltaTime;
+        float frameTime = 1f / framesPerSecond;
 
-        if (timer >= 1f / framesPerSecond)
+        if (timer >= frameTime)
         {
-            timer -= 1f / framesPerSecond;
-            currentFrame = (currentFrame + 1) % animationFrames.Length;
-            spriteRenderer.sprite = animationFrames[currentFrame];
+            timer -= frameTime;
+            AdvanceFrame();
         }
     }
 
-    void ResetToFirstFrame()
+    private void AdvanceFrame()
     {
-        if (animationFrames.Length > 0 && spriteRenderer.sprite != animationFrames[0])
+        currentFrame++;
+
+        if (currentFrame >= animationFrames.Length)
         {
-            currentFrame = 0;
-            timer = 0;
-            spriteRenderer.sprite = animationFrames[0];
+            if (currentMode == PlayMode.Looping)
+            {
+                currentFrame = 0;
+            }
+            else
+            {
+                ResetToFirstFrame();
+                onAnimationComplete?.Invoke();
+                return;
+            }
         }
+
+        spriteRenderer.sprite = animationFrames[currentFrame];
+    }
+
+    public void PlayOnce()
+    {
+        if (animationFrames.Length < 2)
+        {
+            Debug.LogWarning("PlayOnce called but not enough frames to animate.");
+            return;
+        }
+
+        currentMode = PlayMode.Once;
+        timer = 0f;
+        currentFrame = 1;
+        spriteRenderer.sprite = animationFrames[currentFrame];
+    }
+
+    public void PlayLoop()
+    {
+        currentMode = PlayMode.Looping;
+        if (currentFrame == 0) AdvanceFrame();
+    }
+
+    public void ResetToFirstFrame()
+    {
+        currentMode = PlayMode.Idle;
+        currentFrame = 0;
+        timer = 0;
+        if (animationFrames.Length > 0)
+            spriteRenderer.sprite = animationFrames[0];
     }
 }

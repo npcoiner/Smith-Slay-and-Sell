@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 //FIXME code duplication between Furnace and Anvil. Mostly everything is the same other than
@@ -18,6 +20,10 @@ public class Anvil : MonoBehaviour, IInteract
     public int processingHits = 10;
     private int currentHits = 0;
 
+    public AudioClip[] anvilSounds;
+
+    [SerializeField] private GameObject barSprite;
+    [SerializeField] private GameObject hitAnimationSprite;
 
     //Will need to switch from a tag system eventually since only
     //one tag can be set at a time in Unity, but we might have multiple processing
@@ -51,6 +57,10 @@ public class Anvil : MonoBehaviour, IInteract
         Debug.Log($"Anvil started processing: {inputItem.name}");
         currentState = AnvilState.Processing;
 
+        if (barSprite != null)
+        {
+            barSprite.SetActive(currentState == AnvilState.Processing);
+        }
         itemBeingProcessed = inputItem;
         itemBeingProcessed.SetActive(false);
 
@@ -64,6 +74,7 @@ public class Anvil : MonoBehaviour, IInteract
 
         if (itemBeingProcessed != null)
         {
+            barSprite.SetActive(false);
             Destroy(itemBeingProcessed);
         }
         if (outputPrefab != null)
@@ -97,6 +108,11 @@ public class Anvil : MonoBehaviour, IInteract
         if (currentState == AnvilState.Processing)
         {
             //bonk
+            if (hitAnimationSprite.TryGetComponent(out SpriteAnimator component))
+            {
+                component.PlayOnce();
+                TriggerSound();
+            }
             currentHits += 1;
             Debug.Log("test");
 
@@ -106,5 +122,9 @@ public class Anvil : MonoBehaviour, IInteract
             CompleteProcessing();
         }
 
+    }
+    void TriggerSound()
+    {
+        SFX.Play(anvilSounds[Random.Range(0, anvilSounds.Length)], transform.position, Random.Range(1f, 1.5f));
     }
 }
