@@ -52,12 +52,14 @@ public class Furnace : MonoBehaviour, IInteract
 
     private void OnTriggerEnter(Collider other)
     {
+        //TODO move off the item tag system
         if (currentState == FurnaceState.Idle && other.CompareTag(validItemTag))
         {
 
             StartProcessing(other.transform.root.gameObject);
         }
     }
+
     private void StartProcessing(GameObject inputItem)
     {
         Debug.Log($"Furnace started processing: {inputItem.name}");
