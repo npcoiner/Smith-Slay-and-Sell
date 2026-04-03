@@ -96,6 +96,7 @@ public class PlayerInteract : MonoBehaviour
         //the interface
         var objectInRange = interactSphereScript.GetNearestFiltered(INTERACT_TAG);
         //Debug.Log(objectInRange.name);
+
         if (objectInRange != null)
         {
             var tempMonoArray = objectInRange.GetComponents<MonoBehaviour>();

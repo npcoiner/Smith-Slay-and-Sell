@@ -8,6 +8,7 @@ public class Furnace : MonoBehaviour, IInteract
         Processing,
         Finished
     }
+
     [SerializeField] private GameObject fireSprite;
     [Header("Furnace Status")]
     public FurnaceState currentState = FurnaceState.Idle;
@@ -105,6 +106,7 @@ public class Furnace : MonoBehaviour, IInteract
 
         currentState = FurnaceState.Idle;
     }
+
     //Public interact for IInteract interface
     //Handles the interact functionality
     public void Interact(GameObject player)
