@@ -71,7 +71,6 @@ public class PlayerMovement : MonoBehaviour
     }
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        Debug.Log("Hit");
         Rigidbody body = hit.collider.attachedRigidbody;
 
         if (body == null || body.isKinematic)

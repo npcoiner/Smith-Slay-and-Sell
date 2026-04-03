@@ -5,14 +5,12 @@ using UnityEngine;
 //FIXME code duplication between Furnace and Anvil. Mostly everything is the same other than
 //interact and tag filtering
 
-public class OreBox : MonoBehaviour, IInteract
-{
+public class OreBox : MonoBehaviour, IInteract{
 
     public AudioClip[] oreBoxSounds;
     public GameObject oreObj;
-
-
-    void Update()
+    public
+        void Update()
     { }
     public void Interact(GameObject player)
     {
