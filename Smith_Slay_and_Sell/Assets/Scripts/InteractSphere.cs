@@ -93,13 +93,18 @@ public class InteractSphere : MonoBehaviour
 
         objectsInRange.Remove(other.gameObject);
     }
+    //Holding the state on the InteractSphere is not correct and can lead to bugs
+    //where the highlight might stay on if the InteractSphere ever get's lost
+    //or a race condition occurs. Holding state on the highlighted object and simply
+    //updating that state is much more robust, but might require more communication through
+    //interfaces or events, which can be less performant. For a small project I have opted for
+    //the potentially less robust option for now.
     void RemoveHighlight(GameObject obj)
     {
         Renderer rend = obj.transform.root.GetComponentInChildren<Renderer>();
         if (rend != null)
         {
             rend.material.SetColor("_EmissionColor", Color.black);
-
             rend.material.DisableKeyword("_EMISSION");
         }
         else
@@ -109,17 +114,13 @@ public class InteractSphere : MonoBehaviour
 
         lastSelected = null;
     }
-
     void ApplyHighlight(GameObject obj)
     {
         Debug.Log("Highlighting");
         Renderer rend = obj.transform.root.GetComponentInChildren<Renderer>();
         if (rend != null)
         {
-            // 1. You have to tell URP it's allowed to glow first
             rend.material.EnableKeyword("_EMISSION");
-
-            // 2. Set the actual built-in emission color property to bright yellow
             rend.material.SetColor("_EmissionColor", Color.white * 0.1f);
         }
         else
