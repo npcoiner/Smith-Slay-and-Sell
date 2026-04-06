@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: 7275515817648612346}
   - component: {fileID: 6731415553251350063}
   - component: {fileID: 1715331307048815680}
+  - component: {fileID: 4070865282576210951}
   m_Layer: 0
   m_Name: SwordMould
   m_TagString: Interactable
@@ -254,3 +255,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84b8e413ed7fb53f084f311c83dc485a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pickupable
+--- !u!114 &4070865282576210951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5506925708470799719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8635a2c7466a3b261a42ac6b9761bbe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MouldItem
+  type: 1

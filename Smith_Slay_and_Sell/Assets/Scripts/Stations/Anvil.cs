@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 //FIXME code duplication between Furnace and Anvil. Mostly everything is the same other than
@@ -11,8 +11,12 @@ public class Anvil : MonoBehaviour, IInteract
     {
         Idle,
         Processing,
-        Finished
+        Finished,
     }
+
+    [SerializeField]
+    private AnvilRecipeDict recipeManager;
+
     [Header("Anvil Status")]
     public AnvilState currentState = AnvilState.Idle;
 
@@ -22,25 +26,24 @@ public class Anvil : MonoBehaviour, IInteract
 
     public AudioClip[] anvilSounds;
 
-    [SerializeField] private GameObject barSprite;
-    [SerializeField] private GameObject hitAnimationSprite;
+    private bool hasWorkable = false;
+    private WorkableType heldWorkable = WorkableType.None;
 
-    //Will need to switch from a tag system eventually since only
-    //one tag can be set at a time in Unity, but we might have multiple processing
-    //types that should only work on some entities
-    [Header("Item Settings")]
-    [Tooltip("The tag of the item this Anvil accepts.")]
-    public string validItemTag = "Forgeable";
-    [Tooltip("The prefab to spawn after processing completes")]
-    public GameObject outputPrefab;
+    [SerializeField]
+    private GameObject barSprite;
+
+    [SerializeField]
+    private GameObject hitAnimationSprite;
+
     [Tooltip("Where the finished item should apper.")]
     public Transform spawnPoint;
 
-
-    private GameObject itemBeingProcessed;
-
     void Update()
     {
+        if (currentState == AnvilState.Idle && hasWorkable && heldWorkable != WorkableType.None)
+        {
+            StartProcessing();
+        }
         //Only show bar when active.
         //TODO: make this system dynamic so it works with any prefab
         if (currentState == AnvilState.Idle && barSprite != null && barSprite.activeInHierarchy)
@@ -51,62 +54,52 @@ public class Anvil : MonoBehaviour, IInteract
 
     private void OnTriggerEnter(Collider other)
     {
-        if (currentState == AnvilState.Idle && other.CompareTag(validItemTag))
+        if (currentState == AnvilState.Idle)
         {
-            //Process on the root object
-            StartProcessing(other.transform.root.gameObject);
+            //Process on the parent object
+            GameObject parentObject = other.transform.root.gameObject;
+            if (!hasWorkable && parentObject.TryGetComponent(out WorkableItem workable))
+            {
+                hasWorkable = true;
+                heldWorkable = workable.type;
+                Destroy(parentObject);
+            }
         }
     }
-    private void StartProcessing(GameObject inputItem)
+
+    private void StartProcessing()
     {
-        Debug.Log($"Anvil started processing: {inputItem.name}");
+        Debug.Log($"Anvil started processing: {heldWorkable}");
         currentState = AnvilState.Processing;
 
         if (barSprite != null)
         {
             barSprite.SetActive(currentState == AnvilState.Processing);
         }
-        itemBeingProcessed = inputItem;
-        itemBeingProcessed.SetActive(false);
-
+        currentHits = 0;
     }
 
     private void CompleteProcessing()
     {
         Debug.Log("Anvil finished processing.");
-        currentHits = 0;
         currentState = AnvilState.Finished;
 
-        if (itemBeingProcessed != null)
-        {
-            barSprite.SetActive(false);
-            Destroy(itemBeingProcessed);
-        }
-        if (outputPrefab != null)
-        {
-            Vector3 spawnPos = spawnPoint != null ? spawnPoint.position : transform.position + Vector3.up;
-            GameObject spawnedObject = Instantiate(outputPrefab, spawnPos, Quaternion.identity);
-            Rigidbody rb = spawnedObject.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                float upForce = 5f;
-                float sideRange = 2f;
+        //Spawn item
+        Vector3 spawnPos =
+            spawnPoint != null ? spawnPoint.position : transform.position + Vector3.up;
+        GameObject instance = Instantiate(
+            recipeManager.GetRecipeForWorkableType(heldWorkable),
+            spawnPos,
+            Quaternion.identity
+        );
 
-                Vector3 force = new Vector3(
-                    Random.Range(-sideRange, sideRange),
-                    upForce,
-                    Random.Range(-sideRange, sideRange)
-                );
-
-                rb.AddForce(force, ForceMode.Impulse);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No output prefab assigned to Anvil!");
-        }
+        //Reset back to default state
+        hasWorkable = false;
+        heldWorkable = WorkableType.None;
+        currentHits = 0;
         currentState = AnvilState.Idle;
     }
+
     public void Interact(GameObject player)
     {
         Debug.Log(currentHits);
@@ -120,16 +113,19 @@ public class Anvil : MonoBehaviour, IInteract
             }
             currentHits += 1;
             Debug.Log("test");
-
         }
         if (currentHits >= processingHits)
         {
             CompleteProcessing();
         }
-
     }
+
     void TriggerSound()
     {
-        SFX.Play(anvilSounds[Random.Range(0, anvilSounds.Length)], transform.position, Random.Range(1f, 1.5f));
+        SFX.Play(
+            anvilSounds[Random.Range(0, anvilSounds.Length)],
+            transform.position,
+            Random.Range(1f, 1.5f)
+        );
     }
 }

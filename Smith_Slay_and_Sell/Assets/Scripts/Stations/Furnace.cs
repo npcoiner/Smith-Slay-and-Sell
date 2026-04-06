@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Furnace : MonoBehaviour, IInteract
@@ -6,10 +7,15 @@ public class Furnace : MonoBehaviour, IInteract
     {
         Idle,
         Processing,
-        Finished
+        Finished,
     }
 
-    [SerializeField] private GameObject fireSprite;
+    [SerializeField]
+    private FurnaceRecipeDict recipeManager;
+
+    [SerializeField]
+    private GameObject fireSprite;
+
     [Header("Furnace Status")]
     public FurnaceState currentState = FurnaceState.Idle;
 
@@ -17,24 +23,29 @@ public class Furnace : MonoBehaviour, IInteract
     public float processingTime = 3.0f;
 
     private float currentTimer = 0f;
+    private bool hasFuel = false;
+    private bool hasSmeltable = false;
 
+    private OreType heldSmeltable = OreType.None;
 
-    //Will need to switch from a tag system eventually since only
-    //one tag can be set at a time in Unity, but we might have multiple processing
-    //types that should only work on some entities
-    [Header("Item Settings")]
-    [Tooltip("The tag of the item this Furnace accepts.")]
-    public string validItemTag = "Processable";
-    [Tooltip("The prefab to spawn after processing completes")]
-    public GameObject outputPrefab;
     [Tooltip("Where the finished item should apper.")]
     public Transform spawnPoint;
 
-
     private GameObject itemBeingProcessed;
+
+    void Start() { }
 
     void Update()
     {
+        if (
+            currentState == FurnaceState.Idle
+            && hasFuel
+            && hasSmeltable
+            && heldSmeltable != OreType.None
+        )
+        {
+            StartProcessing();
+        }
         if (fireSprite != null)
         {
             fireSprite.SetActive(currentState == FurnaceState.Processing);
@@ -47,63 +58,53 @@ public class Furnace : MonoBehaviour, IInteract
                 CompleteProcessing();
                 currentTimer = 0f;
             }
-
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //TODO move off the item tag system
-        if (currentState == FurnaceState.Idle && other.CompareTag(validItemTag))
+        if (currentState == FurnaceState.Idle)
         {
-
-            StartProcessing(other.transform.root.gameObject);
+            GameObject parentObject = other.transform.root.gameObject;
+            if (!hasSmeltable && parentObject.TryGetComponent(out OreItem smeltable))
+            {
+                heldSmeltable = smeltable.type;
+                hasSmeltable = true;
+                Destroy(parentObject);
+            }
+            else if (!hasFuel && parentObject.TryGetComponent(out CoalItem coalItem))
+            {
+                hasFuel = true;
+                Destroy(parentObject);
+            }
         }
     }
 
-    private void StartProcessing(GameObject inputItem)
+    private void StartProcessing()
     {
-        Debug.Log($"Furnace started processing: {inputItem.name}");
+        Debug.Log($"Furnace started processing: {heldSmeltable}");
         currentState = FurnaceState.Processing;
         currentTimer = 0f;
-
-        itemBeingProcessed = inputItem;
-        itemBeingProcessed.SetActive(false);
     }
 
     private void CompleteProcessing()
     {
         Debug.Log("Furnace finished processing.");
         currentState = FurnaceState.Finished;
+        Vector3 spawnPos =
+            spawnPoint != null ? spawnPoint.position : transform.position + Vector3.up;
 
-        if (itemBeingProcessed != null)
-        {
-            Destroy(itemBeingProcessed);
-        }
-        if (outputPrefab != null)
-        {
-            Vector3 spawnPos = spawnPoint != null ? spawnPoint.position : transform.position + Vector3.up;
-            GameObject spawnedObject = Instantiate(outputPrefab, spawnPos, Quaternion.identity);
-            Rigidbody rb = spawnedObject.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                float upForce = 5f;
-                float sideRange = 2f;
+        //Using FurnaceRecipeDict to find the corresponding prefab give the smeltable and spawn it
+        GameObject instance = Instantiate(
+            recipeManager.GetRecipeForOreType(heldSmeltable),
+            spawnPos,
+            Quaternion.identity
+        );
 
-                Vector3 force = new Vector3(
-                    Random.Range(-sideRange, sideRange),
-                    upForce,
-                    Random.Range(-sideRange, sideRange)
-                );
-
-                rb.AddForce(force, ForceMode.Impulse);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No output prefab assigned to Furnace!");
-        }
-
+        //Set back to default state
+        hasFuel = false;
+        hasSmeltable = false;
+        heldSmeltable = OreType.None;
         currentState = FurnaceState.Idle;
     }
 

@@ -1,9 +1,12 @@
 using UnityEngine;
+
 // This class is intended to be used with sprites to have them always face the camera.
 
 public class Billboard : MonoBehaviour
 {
-    [SerializeField] private bool preserveZRotation = true;
+    [SerializeField]
+    private bool preserveZRotation = true;
+
     void LateUpdate()
     {
         Vector3 camForward = Camera.main.transform.forward;
