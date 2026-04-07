@@ -208,9 +208,9 @@ MonoBehaviour:
   showInteractSphere: 0
   heldObject: {fileID: 0}
   heldRb: {fileID: 0}
-  suctionStrength: 500
-  dampening: 50
-  holdDistance: 2
+  suctionStrength: 200
+  dampening: 25
+  holdDistance: 1.5
   holdHeight: 0.66
 --- !u!114 &7303932866538419565
 MonoBehaviour:

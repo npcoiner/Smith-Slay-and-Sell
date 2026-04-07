@@ -30,7 +30,7 @@ public class PlayerInteract : MonoBehaviour
             controller = gameObject.AddComponent<CharacterController>();
 
         //This code searches for the InteractSphere, and if it doesn't exist, it creates a new one.
-        //This is slightly unnecessary to be completely honest, but it's a good way to showcase how
+        //This is very unnecessary to be completely honest, but it's a good way to showcase how
         //to use scripting to create components and attatch them all together.
         interactSphereTransform = transform.Find("InteractSphere");
         if (!interactSphereTransform)
@@ -38,7 +38,7 @@ public class PlayerInteract : MonoBehaviour
             var interactSphereObj = new GameObject("InteractSphere");
             interactSphereObj.AddComponent<InteractSphere>();
             interactSphereObj.transform.SetParent(transform);
-            interactSphereObj.transform.localPosition = new Vector3(0, 0, 1);
+            interactSphereObj.transform.localPosition = new Vector3(0, 0.5f, 1);
             SphereCollider col = interactSphereObj.AddComponent<SphereCollider>();
             col.isTrigger = true;
             col.radius = 1f;
@@ -123,7 +123,9 @@ public class PlayerInteract : MonoBehaviour
             heldRb.detectCollisions = true;
             heldRb.useGravity = true;
             heldRb.angularDamping = 0.05f; //default unity value
-            heldRb.linearVelocity = Vector3.ClampMagnitude(heldRb.linearVelocity, 10f);
+            //clamp and give a little push in the forward direction
+            heldRb.linearVelocity =
+                Vector3.ClampMagnitude(heldRb.linearVelocity, 10f) + transform.forward * 3.0f;
             heldRb.angularVelocity = Vector3.zero;
             heldRb = null;
         }
