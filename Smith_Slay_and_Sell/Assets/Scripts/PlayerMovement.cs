@@ -3,10 +3,17 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float playerSpeed = 5.0f;
-    [SerializeField] private float deadzone = 1f;
-    [SerializeField] private float turnSmoothSpeed = 1f;
-    [SerializeField] private float pushPower = 2.0f;
+    [SerializeField]
+    private float playerSpeed = 5.0f;
+
+    [SerializeField]
+    private float deadzone = 1f;
+
+    [SerializeField]
+    private float turnSmoothSpeed = 1f;
+
+    [SerializeField]
+    private float pushPower = 2.0f;
 
     private CharacterController controller;
     private Vector3 playerVelocity;
@@ -15,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isWalking;
 
     private float playerCenter = 0.5f;
+
     private void Start()
     {
         //This if statement attemps to get a component if it already exists,
@@ -28,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
         controller.radius = 0.25f;
         controller.minMoveDistance = 0f;
         controller.skinWidth = 0.1f;
+        controller.stepOffset = 0.4f;
         playerInput = GetComponent<PlayerInput>();
 
         //Debug.Log(controller);
@@ -41,7 +50,6 @@ public class PlayerMovement : MonoBehaviour
         //Ensure the value has a magnitude greater than the deadzone
         if (input.magnitude < deadzone)
         {
-
             isWalking = false;
             return;
         }
@@ -57,18 +65,27 @@ public class PlayerMovement : MonoBehaviour
             isWalking = true;
             //Rotate player forward to slerp into moving direction
             Quaternion targetRotation = Quaternion.LookRotation(move, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSmoothSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                turnSmoothSpeed * Time.deltaTime
+            );
         }
-
+        if (!controller.isGrounded)
+        {
+            move += Physics.gravity;
+        }
         //Apply movement speed modifier
         Vector3 finalMove = (move * playerSpeed);
 
         controller.Move(finalMove * Time.deltaTime);
     }
+
     public bool IsWalking()
     {
         return isWalking;
     }
+
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Rigidbody body = hit.collider.attachedRigidbody;
@@ -82,12 +99,13 @@ public class PlayerMovement : MonoBehaviour
         body.linearVelocity = pushDir * pushPower;
         //        body.AddForce(pushDir * pushPower, ForceMode.Impulse);
     }
+
     void LateUpdate()
     {
         Vector3 lockedPosition = transform.position;
         //
-        lockedPosition.y = playerCenter;
-
-        transform.position = lockedPosition;
+        // lockedPosition.y = playerCenter;
+        //
+        // transform.position = lockedPosition;
     }
 }

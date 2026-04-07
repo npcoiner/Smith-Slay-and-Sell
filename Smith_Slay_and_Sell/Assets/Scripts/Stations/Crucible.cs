@@ -95,8 +95,8 @@ public class Crucible : MonoBehaviour
         OreType pouredMetal = OreType.None;
         if (temperature > minPourTemp && currentMetalList.Count > 0)
         {
-            pouredMetal = currentMetalList[currentMetalList.Count - 1];
-            currentMetalList.RemoveAt(currentMetalList.Count - 1);
+            pouredMetal = currentMetalList[0];
+            currentMetalList.RemoveAt(0);
         }
         else
         {
