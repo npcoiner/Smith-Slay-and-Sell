@@ -107,24 +107,21 @@ public class Crucible : MonoBehaviour
 
     private void AddCoalToCrucible()
     {
-        temporaryAddIronOreToCrucible();
+        //temporaryAddIronOreToCrucible();
+        Debug.Log("TODO add steel if coal added to iron layer");
     }
 
     private void AddMetalToCrucible(OreType itemType)
     {
-        temporaryAddIronOreToCrucible();
+        //TODO finish MetalItem.cs
+        //temporaryAddIronOreToCrucible();
     }
 
     private void AddOreToCrucible(OreType itemType)
     {
-        temporaryAddIronOreToCrucible();
-    }
-
-    private void temporaryAddIronOreToCrucible()
-    {
         if (currentMetalList.Count < maxCapacity || currentSlag + currentMetal > maxCapacity)
         {
-            currentMetalList.Add(OreType.IronOre);
+            currentMetalList.Add(itemType);
             currentMetal += 1;
             currentSlag += 1;
         }
