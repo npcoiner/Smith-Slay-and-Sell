@@ -2731,6 +2731,9 @@ MonoBehaviour:
   - oreType: 1
     mouldType: 1
     prefab: {fileID: 5506925708470799719, guid: d020cbb9c3c1afd688abfa51006a5307, type: 3}
+  - oreType: 2
+    mouldType: 1
+    prefab: {fileID: 5506925708470799719, guid: 58bfe36a96ee7604dbdbe6d5ca0fcf3b, type: 3}
 --- !u!1001 &993790846
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4251,6 +4254,75 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c804ed7c14a0f736b74feaeae380fcc, type: 3}
+--- !u!1001 &1630498929
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1668781121119669187, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: oreObj
+      value: 
+      objectReference: {fileID: 5506925708470799719, guid: 22824765c6d99d987a8ed9cf1bc16b46, type: 3}
+    - target: {fileID: 1668781121119669187, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: sfxManager
+      value: 
+      objectReference: {fileID: 2085523138}
+    - target: {fileID: 2377250773579633638, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a9897cc6a04901709be8d5e7adc982d9, type: 3}
+    - target: {fileID: 5506925708470799719, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_Name
+      value: CopperOreBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526510370948039828, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.533
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526510370948039828, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526510370948039828, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526510370948039828, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526510370948039828, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526510370948039828, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526510370948039828, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526510370948039828, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526510370948039828, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526510370948039828, guid: ae615e57a49def598898ef135ba35df3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ae615e57a49def598898ef135ba35df3, type: 3}
 --- !u!4 &1632018405 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5526510370948039828, guid: 4c804ed7c14a0f736b74feaeae380fcc, type: 3}
@@ -5018,6 +5090,7 @@ SceneRoots:
   - {fileID: 573117681}
   - {fileID: 717704850}
   - {fileID: 1232427632}
+  - {fileID: 2085523139}
   - {fileID: 958470396}
   - {fileID: 430884672}
   - {fileID: 1390748605}
@@ -5032,4 +5105,4 @@ SceneRoots:
   - {fileID: 1021012628}
   - {fileID: 762600189}
   - {fileID: 78308756}
-  - {fileID: 2085523139}
+  - {fileID: 1630498929}
