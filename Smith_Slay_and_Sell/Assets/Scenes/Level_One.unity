@@ -2827,6 +2827,12 @@ MonoBehaviour:
   - workableType: 1
     metalType: 2
     prefab: {fileID: 5506925708470799719, guid: 5a99f85be3d61f7a3988a671e6213122, type: 3}
+  - workableType: 2
+    metalType: 1
+    prefab: {fileID: 5506925708470799719, guid: 9092e0e1f322725f79a17180496b9b44, type: 3}
+  - workableType: 2
+    metalType: 2
+    prefab: {fileID: 5506925708470799719, guid: b5a741caae72f392f94df412b6a2d492, type: 3}
 --- !u!114 &958470398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2846,6 +2852,12 @@ MonoBehaviour:
   - oreType: 2
     mouldType: 1
     prefab: {fileID: 5506925708470799719, guid: 58bfe36a96ee7604dbdbe6d5ca0fcf3b, type: 3}
+  - oreType: 1
+    mouldType: 4
+    prefab: {fileID: 5506925708470799719, guid: 3afbec3de67b5de07a758248ff63a979, type: 3}
+  - oreType: 2
+    mouldType: 4
+    prefab: {fileID: 5506925708470799719, guid: 1f6a5dd9cc857b0968edb38003e961bb, type: 3}
 --- !u!1001 &993790846
 PrefabInstance:
   m_ObjectHideFlags: 0

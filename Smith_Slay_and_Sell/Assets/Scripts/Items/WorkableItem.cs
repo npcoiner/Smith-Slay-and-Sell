@@ -7,6 +7,7 @@ public enum WorkableType
 {
     None,
     WorkableSword,
+    WorkableHammer,
 }
 
 public class WorkableItem : MonoBehaviour

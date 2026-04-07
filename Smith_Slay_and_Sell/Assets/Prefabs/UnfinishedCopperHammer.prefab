@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1000856216590904270}
   - component: {fileID: 9193172843037282671}
   m_Layer: 0
-  m_Name: HammerMouldSprite
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bcba3547440bea0fea358af354545f31, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d69f7d8e7eb21684aa6c0200bcd0fb37, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -115,10 +115,10 @@ GameObject:
   - component: {fileID: 5526510370948039828}
   - component: {fileID: 7275515817648612346}
   - component: {fileID: 6731415553251350063}
-  - component: {fileID: 1715331307048815680}
-  - component: {fileID: 4070865282576210951}
+  - component: {fileID: 5424567908987411435}
+  - component: {fileID: 8927358639984517205}
   m_Layer: 0
-  m_Name: HammerMould
+  m_Name: UnfinishedCopperHammer
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,7 +164,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!64 &6731415553251350063
@@ -189,7 +189,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 289301614986012343, guid: cc4b5c0c4dd6a2ebba0956f65745ab60, type: 3}
---- !u!114 &1715331307048815680
+--- !u!114 &5424567908987411435
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84b8e413ed7fb53f084f311c83dc485a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pickupable
---- !u!114 &4070865282576210951
+--- !u!114 &8927358639984517205
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -210,7 +210,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5506925708470799719}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8635a2c7466a3b261a42ac6b9761bbe0, type: 3}
+  m_Script: {fileID: 11500000, guid: 134eb3e6fa7b5c17894b96302e92d9ec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MouldItem
-  type: 4
+  m_EditorClassIdentifier: Assembly-CSharp::WorkableItem
+  type: 2
+  metalType: 2
