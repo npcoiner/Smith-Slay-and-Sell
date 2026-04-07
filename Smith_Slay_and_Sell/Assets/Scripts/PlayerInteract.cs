@@ -5,6 +5,7 @@ public class PlayerInteract : MonoBehaviour
 {
     private string INTERACT_TAG = "Interactable";
     private CharacterController controller;
+
     [Header("Debug Options")]
     public bool showInteractSphere = false;
 
@@ -20,6 +21,7 @@ public class PlayerInteract : MonoBehaviour
     public float dampening = 15f;
     public float holdDistance = 1.5f;
     public float holdHeight = 1.0f;
+
     private void Awake()
     {
         //This code attempts to get a component on the attatched game object and otherwise creates it.
@@ -60,7 +62,8 @@ public class PlayerInteract : MonoBehaviour
     //OnValidate runs on both awake and on editor change to show the interactSphere for debugging purposes.
     private void OnValidate()
     {
-        if (!interactSphereTransform) return;
+        if (!interactSphereTransform)
+            return;
         var meshRenderer = interactSphereTransform.GetComponent<MeshRenderer>();
         if (meshRenderer)
         {
@@ -71,12 +74,11 @@ public class PlayerInteract : MonoBehaviour
     private void OnInteractStarted(InputAction.CallbackContext ctx)
     {
         interactSphereScript.CleanUpList();
-
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext ctx)
     {
-        //Some things don't destroy immediately in order to determine logic. 
+        //Some things don't destroy immediately in order to determine logic.
         //Better to cover all cases than follow one strict paradigm. All objects
         //that are set inactive should get deleted eventually though or we risk memory leaks.
         if (heldRb != null && heldRb.gameObject.activeInHierarchy)
@@ -111,16 +113,16 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
-    private void OnInteractCanceled(InputAction.CallbackContext ctx)
-    {
-    }
+    private void OnInteractCanceled(InputAction.CallbackContext ctx) { }
 
     private void DropObject()
     {
         if (heldRb != null)
         {
+            //Reenable collisions
+            heldRb.detectCollisions = true;
             heldRb.useGravity = true;
-            heldRb.angularDamping = 0.05f;//default unity value
+            heldRb.angularDamping = 0.05f; //default unity value
             heldRb.linearVelocity = Vector3.ClampMagnitude(heldRb.linearVelocity, 10f);
             heldRb.angularVelocity = Vector3.zero;
             heldRb = null;
@@ -132,8 +134,11 @@ public class PlayerInteract : MonoBehaviour
     {
         if (heldRb != null)
         {
+            //Disable collisions while holding object
+            heldRb.detectCollisions = false;
             //Magnet hands code
-            Vector3 targetPos = transform.position + (transform.forward * holdDistance) + (Vector3.up * holdHeight);
+            Vector3 targetPos =
+                transform.position + (transform.forward * holdDistance) + (Vector3.up * holdHeight);
             Vector3 direction = targetPos - heldRb.position;
             float distance = direction.magnitude;
 
@@ -143,7 +148,11 @@ public class PlayerInteract : MonoBehaviour
 
             if (distance < 0.05f)
             {
-                heldRb.linearVelocity = Vector3.Lerp(heldRb.linearVelocity, Vector3.zero, Time.fixedDeltaTime);
+                heldRb.linearVelocity = Vector3.Lerp(
+                    heldRb.linearVelocity,
+                    Vector3.zero,
+                    Time.fixedDeltaTime
+                );
             }
 
             heldRb.AddForce(suctionForce - dragForce, ForceMode.Acceleration);

@@ -1,14 +1,13 @@
-using UnityEngine;
 using System.Collections.Generic;
-
+using UnityEngine;
 
 // TODO filter for pickupable/interactables probably using tags.
 public class InteractSphere : MonoBehaviour
 {
     private string INTERACT_TAG = "Interactable";
     private List<GameObject> objectsInRange = new List<GameObject>();
-    private GameObject selected = null;
-    private GameObject lastSelected = null;
+    public GameObject selected = null;
+    public GameObject lastSelected = null;
 
     void Update()
     {
@@ -18,7 +17,6 @@ public class InteractSphere : MonoBehaviour
             if (lastSelected != null)
             {
                 RemoveHighlight(lastSelected);
-
             }
         }
         else
@@ -39,8 +37,9 @@ public class InteractSphere : MonoBehaviour
     public GameObject GetNearestInRange()
     {
         //Remove any destroyed or missing objects for whatever reason.
-        objectsInRange.RemoveAll(item => item == null);
-        if (objectsInRange.Count == 0) return null;
+        CleanUpList();
+        if (objectsInRange.Count == 0)
+            return null;
 
         GameObject nearestObj = null;
         float shortestDistance = float.MaxValue;
@@ -57,19 +56,19 @@ public class InteractSphere : MonoBehaviour
         }
         return nearestObj;
     }
+
     public GameObject GetNearestFiltered(string filterTag)
     {
-        objectsInRange.RemoveAll(item => item == null);
-        if (objectsInRange.Count == 0) return null;
+        CleanUpList();
+        if (objectsInRange.Count == 0)
+            return null;
 
         GameObject nearestObjFiltered = null;
         float shortestDistance = float.MaxValue;
         foreach (var obj in objectsInRange)
         {
-
             if (obj.CompareTag(filterTag) && obj.activeInHierarchy)
             {
-
                 float distanceToObj = (obj.transform.position - transform.position).sqrMagnitude;
                 if (distanceToObj < shortestDistance)
                 {
@@ -81,6 +80,7 @@ public class InteractSphere : MonoBehaviour
         }
         return nearestObjFiltered;
     }
+
     void OnTriggerEnter(Collider other)
     {
         //   Debug.Log($"Enter: {other.name}");
@@ -93,6 +93,7 @@ public class InteractSphere : MonoBehaviour
 
         objectsInRange.Remove(other.gameObject);
     }
+
     //Holding the state on the InteractSphere is not correct and can lead to bugs
     //where the highlight might stay on if the InteractSphere ever get's lost
     //or a race condition occurs. Holding state on the highlighted object and simply
@@ -114,6 +115,7 @@ public class InteractSphere : MonoBehaviour
 
         lastSelected = null;
     }
+
     void ApplyHighlight(GameObject obj)
     {
         Debug.Log("Highlighting");
@@ -130,8 +132,10 @@ public class InteractSphere : MonoBehaviour
 
         lastSelected = obj;
     }
+
     public void CleanUpList()
     {
         objectsInRange.RemoveAll(item => item == null);
+        objectsInRange.RemoveAll(item => !item.activeSelf); // Important for things like Mould that become inactive when places into the mould holder
     }
 }

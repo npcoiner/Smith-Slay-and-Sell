@@ -7,6 +7,7 @@ public enum MouldType
     SwordMould,
     BlankMould,
     DaggerMould,
+    HammerMould,
 }
 
 public class MouldItem : MonoBehaviour

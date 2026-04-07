@@ -14,10 +14,17 @@ public class MouldHolder : MonoBehaviour, IInteract
     [SerializeField]
     private MouldRecipeDict recipeManager;
 
+    [SerializeField]
+    private MouldSprite mouldSpriteManager;
+
+    [SerializeField]
+    private SpriteRenderer mouldSprite;
+
     public SFXManager sfxManager;
 
     [Header("MouldHolder Status")]
     public MouldHolderState currentState = MouldHolderState.Empty;
+    private GameObject heldMouldObj = null;
     private bool hasMould = false;
     private MouldType heldMould = MouldType.None;
     private OreType heldMetal = OreType.None;
@@ -53,8 +60,10 @@ public class MouldHolder : MonoBehaviour, IInteract
             {
                 heldMould = mould.type;
                 hasMould = true;
+                heldMouldObj = parentObject;
+                UpdateMouldSprite();
                 currentState = MouldHolderState.Idle;
-                Destroy(parentObject);
+                parentObject.SetActive(false);
                 sfxManager.PopSound(transform.position);
             }
         }
@@ -73,6 +82,11 @@ public class MouldHolder : MonoBehaviour, IInteract
             currentState = MouldHolderState.Processing;
             currentTimer = 0f;
         }
+    }
+
+    private void UpdateMouldSprite()
+    {
+        mouldSprite.sprite = mouldSpriteManager.GetSpriteForMouldType(heldMould);
     }
 
     private void CompleteProcessing()
@@ -97,5 +111,39 @@ public class MouldHolder : MonoBehaviour, IInteract
     {
         //TODO give mould to player and turn off hitboxes for items while being held?
         Debug.Log("TODO give mould to player and turn off hitboxes for items while being held?");
+        if (currentState == MouldHolderState.Idle)
+        {
+            if (heldMouldObj == null)
+            {
+                Debug.LogError("Tried to remove non-existant mould!");
+            }
+            //Disable collisions when spawning so it doesn't immediately get absorbed by the MouldHolder
+            if (heldMouldObj.TryGetComponent<Rigidbody>(out Rigidbody tempRb))
+            {
+                if (tempRb != null)
+                {
+                    tempRb.detectCollisions = false;
+                }
+            }
+            //Set player to hold the re-enabled Mould
+            PlayerInteract playerInteractScript = player.GetComponent<PlayerInteract>();
+            if (playerInteractScript != null && playerInteractScript.heldRb == null)
+            {
+                playerInteractScript.heldRb = tempRb;
+                playerInteractScript.heldObject = heldMouldObj.transform;
+            }
+            else
+            {
+                //TODO make this make more sense
+                Debug.LogError("Unreachable code reached! (VERY BAD)");
+            }
+
+            heldMouldObj.SetActive(true);
+            currentState = MouldHolderState.Empty;
+            hasMould = false;
+            heldMould = MouldType.None;
+            heldMouldObj = null;
+            UpdateMouldSprite();
+        }
     }
 }
