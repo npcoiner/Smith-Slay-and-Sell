@@ -15,7 +15,7 @@ public class Crucible : MonoBehaviour
 
     private const int maxCapacity = 10;
     private int currentMetal = 0;
-    List<OreType> currentMetalList = new List<OreType>(capacity: maxCapacity);
+    List<MetalType> currentMetalList = new List<MetalType>(capacity: maxCapacity);
 
     [SerializeField]
     private MoltenMetalDict moltenMetalManager;
@@ -73,7 +73,7 @@ public class Crucible : MonoBehaviour
 
             if (parentObject.TryGetComponent(out OreItem oreItem))
             {
-                AddOreToCrucible(oreItem.type);
+                AddOreToCrucible(oreItem.processedMetalType);
                 Destroy(parentObject);
             }
             else if (parentObject.TryGetComponent(out CoalItem coalItem))
@@ -81,9 +81,9 @@ public class Crucible : MonoBehaviour
                 AddCoalToCrucible();
                 Destroy(parentObject);
             }
-            else if (parentObject.TryGetComponent(out WorkableItem workableItem))
+            else if (parentObject.TryGetComponent(out MetalItem metalItem))
             {
-                AddMetalToCrucible(workableItem.metalType);
+                AddMetalToCrucible(metalItem.metalType);
                 Destroy(parentObject);
             }
             else if (parentObject.TryGetComponent(out FinishedItem finishedItem))
@@ -100,15 +100,15 @@ public class Crucible : MonoBehaviour
         temperature = Mathf.Min(temperature, maxTemperature); // clamp to max
     }
 
-    public OreType PourMetal()
+    public MetalType PourMetal()
     {
         if (temperature > minPourTemp && currentMetalList.Count > 0)
         {
-            OreType pouredMetal = currentMetalList[0];
+            MetalType pouredMetal = currentMetalList[0];
             currentMetalList.RemoveAt(0);
             return pouredMetal;
         }
-        return OreType.None;
+        return MetalType.None;
     }
 
     private void AddCoalToCrucible()
@@ -116,17 +116,26 @@ public class Crucible : MonoBehaviour
         Debug.Log("TODO: Add steel logic if coal added to iron layer");
     }
 
-    private void AddMetalToCrucible(OreType itemType)
+    private void AddMetalToCrucible(MetalType itemType)
     {
-        // Placeholder for future logic
+        if (currentMetalList.Count + 1 <= maxCapacity)
+        {
+            currentMetalList.Add(itemType);
+            SortMetals();
+        }
+        else
+        {
+            Debug.Log("Crucible is full");
+        }
     }
 
-    private void AddOreToCrucible(OreType itemType)
+    //Ore gives both metal and slag to the crucible
+    private void AddOreToCrucible(MetalType metal)
     {
         if (currentMetalList.Count + 2 <= maxCapacity)
         {
-            currentMetalList.Add(itemType);
-            currentMetalList.Add(OreType.Slag);
+            currentMetalList.Add(metal);
+            currentMetalList.Add(MetalType.Slag);
             SortMetals();
         }
         else
@@ -140,12 +149,12 @@ public class Crucible : MonoBehaviour
         if (currentMetalList.Count < 1)
             return;
 
-        List<OreType> metals = new List<OreType>();
+        List<MetalType> metals = new List<MetalType>();
         int slagCount = 0;
 
-        foreach (OreType type in currentMetalList)
+        foreach (MetalType type in currentMetalList)
         {
-            if (type == OreType.Slag)
+            if (type == MetalType.Slag)
                 slagCount++;
             else
                 metals.Add(type);
@@ -154,7 +163,7 @@ public class Crucible : MonoBehaviour
         currentMetalList.Clear();
         currentMetalList.AddRange(metals);
         for (int i = 0; i < slagCount; i++)
-            currentMetalList.Add(OreType.Slag);
+            currentMetalList.Add(MetalType.Slag);
 
         currentMetal = metals.Count;
     }
@@ -170,7 +179,7 @@ public class Crucible : MonoBehaviour
 
         for (int i = 0; i < currentMetalList.Count; i++)
         {
-            OreType currentType = currentMetalList[i];
+            MetalType currentType = currentMetalList[i];
 
             if (
                 moltenMetalManager.TryGetVisuals(
@@ -187,6 +196,22 @@ public class Crucible : MonoBehaviour
             {
                 moltenMetal.SetLayer(i, Color.gray, 0f, true);
             }
+        }
+    }
+
+    public void RemoveSlag()
+    {
+        if (currentMetalList.Contains(MetalType.Slag))
+        {
+            currentMetalList.RemoveAll(metal => metal == MetalType.Slag);
+
+            currentMetal = currentMetalList.Count;
+
+            RefreshVisuals();
+        }
+        else
+        {
+            Debug.Log("No slag to remove.");
         }
     }
 }

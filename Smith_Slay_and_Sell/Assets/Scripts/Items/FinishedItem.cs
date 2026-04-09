@@ -4,10 +4,11 @@ using UnityEngine;
 public enum FinishedType
 {
     FinishedSword,
+    FinishedHammer,
 }
 
 public class FinishedItem : MonoBehaviour
 {
     public FinishedType type;
-    public OreType metalType;
+    public MetalType metalType;
 }

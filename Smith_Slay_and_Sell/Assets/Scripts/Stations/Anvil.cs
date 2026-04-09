@@ -28,7 +28,7 @@ public class Anvil : MonoBehaviour, IInteract
     public SFXManager sfxManager;
 
     private bool hasWorkable = false;
-    private OreType heldOre = OreType.None;
+    private MetalType heldMetal = MetalType.None;
     private WorkableType heldWorkable = WorkableType.None;
 
     [SerializeField]
@@ -46,7 +46,7 @@ public class Anvil : MonoBehaviour, IInteract
             currentState == AnvilState.Idle
             && hasWorkable
             && heldWorkable != WorkableType.None
-            && heldOre != OreType.None
+            && heldMetal != MetalType.None
         )
         {
             StartProcessing();
@@ -69,7 +69,7 @@ public class Anvil : MonoBehaviour, IInteract
             {
                 hasWorkable = true;
                 heldWorkable = workable.type;
-                heldOre = workable.metalType;
+                heldMetal = workable.metalType;
                 sfxManager.PopSound(transform.position);
                 Destroy(parentObject);
             }
@@ -78,7 +78,7 @@ public class Anvil : MonoBehaviour, IInteract
 
     private void StartProcessing()
     {
-        Debug.Log($"Anvil started processing: {(heldWorkable, heldOre)}");
+        Debug.Log($"Anvil started processing: {(heldWorkable, heldMetal)}");
         currentState = AnvilState.Processing;
 
         if (barSprite != null)
@@ -97,7 +97,7 @@ public class Anvil : MonoBehaviour, IInteract
         Vector3 spawnPos =
             spawnPoint != null ? spawnPoint.position : transform.position + Vector3.up;
         GameObject instance = Instantiate(
-            recipeManager.GetRecipeForWorkableType(heldOre, heldWorkable),
+            recipeManager.GetRecipeForWorkableType(heldMetal, heldWorkable),
             spawnPos,
             Quaternion.identity
         );
@@ -105,7 +105,7 @@ public class Anvil : MonoBehaviour, IInteract
         //Reset back to default state
         hasWorkable = false;
         heldWorkable = WorkableType.None;
-        heldOre = OreType.None;
+        heldMetal = MetalType.None;
         currentHits = 0;
         currentState = AnvilState.Idle;
     }

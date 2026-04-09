@@ -13,5 +13,5 @@ public enum WorkableType
 public class WorkableItem : MonoBehaviour
 {
     public WorkableType type;
-    public OreType metalType;
+    public MetalType metalType;
 }

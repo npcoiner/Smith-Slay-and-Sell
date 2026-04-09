@@ -6,6 +6,6 @@ using UnityEngine;
 public struct AnvilRecipeMapping
 {
     public WorkableType workableType;
-    public OreType metalType;
+    public MetalType metalType;
     public GameObject prefab;
 }

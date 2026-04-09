@@ -8,7 +8,7 @@ public class MouldRecipeDict : MonoBehaviour
     [SerializeField]
     private MouldRecipeMapping[] recipeMappings;
 
-    private Dictionary<(OreType, MouldType), GameObject> recipeDictionary;
+    private Dictionary<(MetalType, MouldType), GameObject> recipeDictionary;
 
     void Awake()
     {
@@ -17,11 +17,11 @@ public class MouldRecipeDict : MonoBehaviour
 
     private void InitializeRecipes()
     {
-        recipeDictionary = new Dictionary<(OreType, MouldType), GameObject>();
+        recipeDictionary = new Dictionary<(MetalType, MouldType), GameObject>();
 
         foreach (MouldRecipeMapping mapping in recipeMappings)
         {
-            (OreType ore, MouldType mould) recipeKey = (mapping.oreType, mapping.mouldType);
+            (MetalType metal, MouldType mould) recipeKey = (mapping.metalType, mapping.mouldType);
             var recipeValue = mapping.prefab;
 
             if (!recipeDictionary.ContainsKey(recipeKey))
@@ -30,20 +30,20 @@ public class MouldRecipeDict : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"Duplicate recipe for workable + ore type: {recipeKey}");
+                Debug.LogWarning($"Duplicate recipe for workable + metal type: {recipeKey}");
             }
         }
     }
 
-    public GameObject GetRecipeForMetalMouldType(OreType ore, MouldType mould)
+    public GameObject GetRecipeForMetalMouldType(MetalType metal, MouldType mould)
     {
-        if (recipeDictionary.TryGetValue((ore, mould), out GameObject recipe))
+        if (recipeDictionary.TryGetValue((metal, mould), out GameObject recipe))
         {
             return recipe;
         }
         else
         {
-            Debug.LogError($"No recipe found for workable type: {(ore, mould)}");
+            Debug.LogError($"No recipe found for workable type: {(metal, mould)}");
             return null;
         }
     }

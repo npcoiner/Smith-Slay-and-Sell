@@ -13,4 +13,5 @@ public enum OreType
 public class OreItem : MonoBehaviour
 {
     public OreType type;
+    public MetalType processedMetalType;
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public struct MouldRecipeMapping
 {
-    public OreType oreType;
+    public MetalType metalType;
     public MouldType mouldType;
     public GameObject prefab;
 }

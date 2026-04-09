@@ -8,7 +8,7 @@ public class AnvilRecipeDict : MonoBehaviour
     [SerializeField]
     private AnvilRecipeMapping[] recipeMappings;
 
-    private Dictionary<(OreType, WorkableType), GameObject> recipeDictionary;
+    private Dictionary<(MetalType, WorkableType), GameObject> recipeDictionary;
 
     void Awake()
     {
@@ -17,11 +17,11 @@ public class AnvilRecipeDict : MonoBehaviour
 
     private void InitializeRecipes()
     {
-        recipeDictionary = new Dictionary<(OreType, WorkableType), GameObject>();
+        recipeDictionary = new Dictionary<(MetalType, WorkableType), GameObject>();
 
         foreach (AnvilRecipeMapping mapping in recipeMappings)
         {
-            (OreType ore, WorkableType workable) recipeKey = (
+            (MetalType metal, WorkableType workable) recipeKey = (
                 mapping.metalType,
                 mapping.workableType
             );
@@ -33,20 +33,20 @@ public class AnvilRecipeDict : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"Duplicate recipe for workable + ore type: {recipeKey}");
+                Debug.LogWarning($"Duplicate recipe for workable + metal type: {recipeKey}");
             }
         }
     }
 
-    public GameObject GetRecipeForWorkableType(OreType ore, WorkableType workable)
+    public GameObject GetRecipeForWorkableType(MetalType metal, WorkableType workable)
     {
-        if (recipeDictionary.TryGetValue((ore, workable), out GameObject recipe))
+        if (recipeDictionary.TryGetValue((metal, workable), out GameObject recipe))
         {
             return recipe;
         }
         else
         {
-            Debug.LogError($"No recipe found for workable type: {(workable, ore)}");
+            Debug.LogError($"No recipe found for workable type: {(workable, metal)}");
             return null;
         }
     }

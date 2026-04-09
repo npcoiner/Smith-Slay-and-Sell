@@ -27,7 +27,7 @@ public class MouldHolder : MonoBehaviour, IInteract
     private GameObject heldMouldObj = null;
     private bool hasMould = false;
     private MouldType heldMould = MouldType.None;
-    private OreType heldMetal = OreType.None;
+    private MetalType heldMetal = MetalType.None;
 
     [Header("Processing Settings")]
     public float processingTime = 3.0f;
@@ -69,11 +69,11 @@ public class MouldHolder : MonoBehaviour, IInteract
         }
     }
 
-    public void StartProcessing(OreType metal)
+    public void StartProcessing(MetalType metal)
     {
         heldMetal = metal;
         Debug.Log($"MouldHolder started processing: {(heldMetal, heldMould)}");
-        if (heldMetal == OreType.None || currentState != MouldHolderState.Idle)
+        if (heldMetal == MetalType.None || currentState != MouldHolderState.Idle)
         {
             return;
         }
@@ -104,7 +104,7 @@ public class MouldHolder : MonoBehaviour, IInteract
         sfxManager.PopSound(transform.position);
 
         currentState = MouldHolderState.Idle;
-        heldMetal = OreType.None;
+        heldMetal = MetalType.None;
     }
 
     public void Interact(GameObject player)

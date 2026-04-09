@@ -1190,16 +1190,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoltenMetalDict
   visualMappings:
-  - metalType: 2
+  - oreType: 2
     color: {r: 0.745283, g: 0.094918124, b: 0.094918124, a: 0}
     emissionIntensity: 5
-  - metalType: 3
+  - oreType: 3
     color: {r: 1, g: 0.4921739, b: 0, a: 0}
     emissionIntensity: 5
-  - metalType: 0
+  - oreType: 0
     color: {r: 1, g: 0.033018887, b: 0.79338443, a: 0}
     emissionIntensity: 0
-  - metalType: 1
+  - oreType: 1
     color: {r: 0.254717, g: 0.114259884, b: 0.0084104715, a: 0}
     emissionIntensity: 0
 --- !u!4 &401458300
@@ -3010,16 +3010,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouldRecipeDict
   recipeMappings:
-  - metalType: 2
+  - oreType: 2
     mouldType: 1
     prefab: {fileID: 5506925708470799719, guid: d020cbb9c3c1afd688abfa51006a5307, type: 3}
-  - metalType: 3
+  - oreType: 3
     mouldType: 1
     prefab: {fileID: 5506925708470799719, guid: 58bfe36a96ee7604dbdbe6d5ca0fcf3b, type: 3}
-  - metalType: 2
+  - oreType: 2
     mouldType: 4
     prefab: {fileID: 5506925708470799719, guid: 3afbec3de67b5de07a758248ff63a979, type: 3}
-  - metalType: 3
+  - oreType: 3
     mouldType: 4
     prefab: {fileID: 5506925708470799719, guid: 1f6a5dd9cc857b0968edb38003e961bb, type: 3}
 --- !u!1001 &993790846

@@ -24,8 +24,8 @@ public class Spigot : MonoBehaviour, IInteract
             );
             return;
         }
-        OreType pouredMetal = connectedCrucible.PourMetal();
-        if (pouredMetal == OreType.None)
+        MetalType pouredMetal = connectedCrucible.PourMetal();
+        if (pouredMetal == MetalType.None)
         {
             Debug.Log("Spigot interaction failed: Crucible is empty or too cold to pour.");
             return;
