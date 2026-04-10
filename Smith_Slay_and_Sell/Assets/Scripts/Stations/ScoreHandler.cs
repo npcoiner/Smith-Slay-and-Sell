@@ -1,12 +1,13 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ScoreHandler : MonoBehaviour
 {
     public int score = 0;
+
     [SerializeField]
     private TMP_Text score_txt;
 
@@ -17,20 +18,16 @@ public class ScoreHandler : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void Update() { }
 
     public void UpdateScore(GameObject inputItem)
     {
-	Debug.Log("score update called");
-	if (inputItem != null)
-	{
-	    score += 5;
-	    score_txt.text = "Score: "+score;
-	    Debug.Log(score);
-	}
+        Debug.Log("score update called");
+        if (inputItem != null)
+        {
+            score += 5;
+            score_txt.text = "Score: " + score;
+            Debug.Log(score);
+        }
     }
-
 }

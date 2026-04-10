@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Deposit : MonoBehaviour, IInteract
+public class Deposit : MonoBehaviour
 {
     public enum FurnaceState
     {
@@ -10,22 +10,10 @@ public class Deposit : MonoBehaviour, IInteract
     }
 
     [SerializeField]
-    private GameObject fireSprite;
-
-    [SerializeField]
     private ScoreHandler scoreHandler;
-
-    [Header("Furnace Status")]
-    public FurnaceState currentState = FurnaceState.Idle;
-
-    private float currentTimer = 0f;
     private GameObject itemBeingProcessed;
 
-    //Will need to switch from a tag system eventually since only
-    //one tag can be set at a time in Unity, but we might have multiple processing
-    //types that should only work on some entities
-
-    //TODO use layer instead of tags
+    //TODO implement layer
     [Header("Item Settings")]
     [Tooltip("The layer of the item this Furnace accepts.")]
     public string validItemLayer = "processed";
@@ -44,8 +32,6 @@ public class Deposit : MonoBehaviour, IInteract
     private void StartProcessing(GameObject inputItem)
     {
         Debug.Log($"Deposit box started processing: {inputItem.name}");
-        currentState = FurnaceState.Processing;
-
         itemBeingProcessed = inputItem;
 
         CompleteProcessing();
@@ -54,8 +40,6 @@ public class Deposit : MonoBehaviour, IInteract
     private void CompleteProcessing()
     {
         Debug.Log("Deposit box finished processing.");
-        // currentState = FurnaceState.Finished;
-
         // update score
         scoreHandler.UpdateScore(itemBeingProcessed);
 
@@ -63,8 +47,6 @@ public class Deposit : MonoBehaviour, IInteract
         {
             Destroy(itemBeingProcessed);
         }
-
-        currentState = FurnaceState.Idle;
     }
 
     //Public interact for IInteract interface
