@@ -28,10 +28,8 @@ public class InteractSphere : MonoBehaviour
                 {
                     RemoveHighlight(lastSelected);
                 }
-                if (shouldHighlight)
-                {
-                    ApplyHighlight(selected);
-                }
+
+                ApplyHighlight(selected);
             }
         }
     }

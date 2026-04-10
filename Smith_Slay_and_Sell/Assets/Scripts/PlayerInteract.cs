@@ -84,10 +84,12 @@ public class PlayerInteract : MonoBehaviour
         if (heldRb != null && heldRb.gameObject.activeInHierarchy)
         {
             DropObject();
+            interactSphereScript.startHighlighting();
             return;
         }
 
         //Sanity check
+        interactSphereScript.startHighlighting();
         heldRb = null;
         heldObject = null;
 
@@ -136,6 +138,7 @@ public class PlayerInteract : MonoBehaviour
     {
         if (heldRb != null)
         {
+            interactSphereScript.stopHighlighting();
             //Disable collisions while holding object
             heldRb.detectCollisions = false;
             //Magnet hands code
@@ -158,6 +161,10 @@ public class PlayerInteract : MonoBehaviour
             }
 
             heldRb.AddForce(suctionForce - dragForce, ForceMode.Acceleration);
+        }
+        else
+        {
+            interactSphereScript.startHighlighting();
         }
     }
 }
