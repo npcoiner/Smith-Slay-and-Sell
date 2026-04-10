@@ -1,13 +1,19 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using TMPro;
 
 public class ScoreHandler : MonoBehaviour
 {
     public int score = 0;
+    [SerializeField]
+    private TMP_Text score_txt;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        //score_txt = GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -22,6 +28,7 @@ public class ScoreHandler : MonoBehaviour
 	if (inputItem != null)
 	{
 	    score += 5;
+	    score_txt.text = "Score: "+score;
 	    Debug.Log(score);
 	}
     }

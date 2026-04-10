@@ -34,8 +34,11 @@ public class Deposit : MonoBehaviour, IInteract
 
     private void OnTriggerEnter(Collider other)
     {
-        //TODO move off the item tag system
-        StartProcessing(other.transform.root.gameObject);
+        GameObject parentObject = other.transform.root.gameObject;
+        if (parentObject.TryGetComponent(out FinishedItem finished))
+        {
+            StartProcessing(parentObject);
+        }
     }
 
     private void StartProcessing(GameObject inputItem)
@@ -44,7 +47,6 @@ public class Deposit : MonoBehaviour, IInteract
         currentState = FurnaceState.Processing;
 
         itemBeingProcessed = inputItem;
-        itemBeingProcessed.SetActive(false);
 
         CompleteProcessing();
     }
