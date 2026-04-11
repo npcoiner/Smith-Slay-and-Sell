@@ -840,7 +840,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   requestService: {fileID: 178174453}
-  spawnInterval: 30
+  spawnInterval: 4
   debuglog: 1
 --- !u!4 &178174455
 Transform:
