@@ -17,7 +17,7 @@ public struct Request
 
 public class RequestService : MonoBehaviour
 {
-    private readonly int MAX_REQUEST = 10;
+    private readonly int MAX_REQUEST = 6; //6 fit on screen at a time without covering score
     private readonly float DEFAULT_TIME = 120f; //Each request/order is 2 minutes long by default
     private List<Request> requests;
 
