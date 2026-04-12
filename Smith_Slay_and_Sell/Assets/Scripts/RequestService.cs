@@ -119,8 +119,15 @@ public class RequestService : MonoBehaviour
         for (int i = 0; i < requests.Count; i++)
         {
             Request temp = requests[i];
-            temp.timeLeft -= Time.deltaTime;
-            requests[i] = temp;
+            if (temp.timeLeft <= 0)
+            {
+                requests.RemoveAt(i);
+            }
+            else
+            {
+                temp.timeLeft -= Time.deltaTime;
+                requests[i] = temp;
+            }
         }
     }
 }
