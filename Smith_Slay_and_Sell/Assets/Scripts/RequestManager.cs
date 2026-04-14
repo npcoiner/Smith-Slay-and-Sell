@@ -23,7 +23,10 @@ public class RequestManager : MonoBehaviour
     {
         requestService.UpdateTimeLeft();
         spawnTimer += Time.deltaTime;
-        if (ShouldSpawn())
+        if (
+            ShouldSpawn()
+            && GameStateManager.Instance.CurrentState == GameStateManager.GameState.Active
+        )
         {
             SpawnRequest();
             spawnTimer = 0f;

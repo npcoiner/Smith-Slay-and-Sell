@@ -81,35 +81,38 @@ public class PlayerInteract : MonoBehaviour
         //Some things don't destroy immediately in order to determine logic.
         //Better to cover all cases than follow one strict paradigm. All objects
         //that are set inactive should get deleted eventually though or we risk memory leaks.
-        if (heldRb != null && heldRb.gameObject.activeInHierarchy)
+        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Active)
         {
-            DropObject();
-            interactSphereScript.startHighlighting();
-            return;
-        }
-
-        //Sanity check
-        interactSphereScript.startHighlighting();
-        heldRb = null;
-        heldObject = null;
-
-        //The following block of code gets the nearest interactable that collided with the interact sphere
-        //it then gets all of the MonoBehaviours in order to extract a possible interface, and then
-        //uses the provided interface to interact with the object. We pass the player so the object can
-        //attach itself or perform any needed behaviors. On my machine, the namespace doens't recognize
-        //the interface
-        var objectInRange = interactSphereScript.GetNearestFiltered(INTERACT_TAG);
-        //Debug.Log(objectInRange.name);
-
-        if (objectInRange != null)
-        {
-            var tempMonoArray = objectInRange.GetComponents<MonoBehaviour>();
-            foreach (var monoBehavior in tempMonoArray)
+            if (heldRb != null && heldRb.gameObject.activeInHierarchy)
             {
-                var temp = monoBehavior as IInteract;
-                if (temp != null)
+                DropObject();
+                interactSphereScript.startHighlighting();
+                return;
+            }
+
+            //Sanity check
+            interactSphereScript.startHighlighting();
+            heldRb = null;
+            heldObject = null;
+
+            //The following block of code gets the nearest interactable that collided with the interact sphere
+            //it then gets all of the MonoBehaviours in order to extract a possible interface, and then
+            //uses the provided interface to interact with the object. We pass the player so the object can
+            //attach itself or perform any needed behaviors. On my machine, the namespace doens't recognize
+            //the interface
+            var objectInRange = interactSphereScript.GetNearestFiltered(INTERACT_TAG);
+            //Debug.Log(objectInRange.name);
+
+            if (objectInRange != null)
+            {
+                var tempMonoArray = objectInRange.GetComponents<MonoBehaviour>();
+                foreach (var monoBehavior in tempMonoArray)
                 {
-                    temp.Interact(this.gameObject);
+                    var temp = monoBehavior as IInteract;
+                    if (temp != null)
+                    {
+                        temp.Interact(this.gameObject);
+                    }
                 }
             }
         }
@@ -164,7 +167,10 @@ public class PlayerInteract : MonoBehaviour
         }
         else
         {
-            interactSphereScript.startHighlighting();
+            if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Active)
+            {
+                interactSphereScript.startHighlighting();
+            }
         }
     }
 }

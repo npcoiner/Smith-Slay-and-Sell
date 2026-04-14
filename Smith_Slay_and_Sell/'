@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static System.Random;
+using System.Random;
 
 [Serializable]
 public struct Request

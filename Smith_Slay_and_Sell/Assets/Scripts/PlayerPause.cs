@@ -9,8 +9,12 @@ public class PlayerPause : MonoBehaviour
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
-        var pauseAction = playerInput.actions["Pause"];
-        pauseAction.performed += OnPausePerformed;
+        playerInput.actions["Pause"].performed += OnPausePerformed;
+    }
+
+    private void OnDestroy()
+    {
+        playerInput.actions["Pause"].performed -= OnPausePerformed;
     }
 
     private void OnPausePerformed(InputAction.CallbackContext ctx)

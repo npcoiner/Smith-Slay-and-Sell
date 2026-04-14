@@ -11,20 +11,31 @@ public class ScoreHandler : MonoBehaviour
     [SerializeField]
     private TMP_Text score_txt;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        //score_txt = GetComponent<TextMeshProUGUI>();
-    }
+    public static ScoreHandler Instance { get; private set; }
 
-    // Update is called once per frame
-    void Update() { }
+    public void Awake()
+    {
+        //Singleton
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void UpdateScore()
     {
         Debug.Log("score update called");
         score += 5;
         score_txt.text = "Score: " + score;
-        Debug.Log(score);
+        //Debug.Log(score);
+    }
+
+    public int GetScore()
+    {
+        return score;
     }
 }

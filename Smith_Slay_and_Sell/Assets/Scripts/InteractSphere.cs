@@ -8,7 +8,7 @@ public class InteractSphere : MonoBehaviour
     private List<GameObject> objectsInRange = new List<GameObject>();
     public GameObject selected = null;
     public GameObject lastSelected = null;
-    private bool shouldHighlight = true;
+    private bool shouldHighlight = false;
 
     void Update()
     {
